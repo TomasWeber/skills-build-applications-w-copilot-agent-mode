@@ -2,10 +2,13 @@ import React, { useEffect, useState } from 'react';
 
 const Workouts = () => {
   const [workouts, setWorkouts] = useState([]);
-  const codespace = process.env.REACT_APP_CODESPACE_NAME;
-  const apiUrl = codespace
-    ? `https://${codespace}-8000.app.github.dev/api/workouts/`
-    : 'http://localhost:8000/api/workouts/';
+  // Robust API URL for Codespaces or local
+  let apiUrl;
+  if (window.location.hostname.endsWith('.app.github.dev')) {
+    apiUrl = `https://${window.location.hostname.replace('-3000', '-8000')}/api/workouts/`;
+  } else {
+    apiUrl = 'http://localhost:8000/api/workouts/';
+  }
 
   useEffect(() => {
     console.log('Fetching from:', apiUrl);

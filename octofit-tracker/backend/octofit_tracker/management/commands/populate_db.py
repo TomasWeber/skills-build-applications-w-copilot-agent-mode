@@ -1,31 +1,8 @@
 from django.core.management.base import BaseCommand
 from django.contrib.auth import get_user_model
-from djongo import models
 
-# Define models inline for demonstration; in real projects, use models.py
-class Team(models.Model):
-    name = models.CharField(max_length=100, unique=True)
-    class Meta:
-        app_label = 'octofit_tracker'
-
-class Activity(models.Model):
-    user = models.CharField(max_length=100)
-    type = models.CharField(max_length=100)
-    duration = models.IntegerField()
-    class Meta:
-        app_label = 'octofit_tracker'
-
-class Leaderboard(models.Model):
-    team = models.CharField(max_length=100)
-    points = models.IntegerField()
-    class Meta:
-        app_label = 'octofit_tracker'
-
-class Workout(models.Model):
-    name = models.CharField(max_length=100)
-    difficulty = models.CharField(max_length=50)
-    class Meta:
-        app_label = 'octofit_tracker'
+# Import models from models.py
+from octofit_tracker.models import Team, Activity, Leaderboard, Workout
 
 User = get_user_model()
 
