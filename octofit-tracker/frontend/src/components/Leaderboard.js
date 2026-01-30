@@ -1,0 +1,52 @@
+import React, { useEffect, useState } from 'react';
+
+const Leaderboard = () => {
+  const [leaderboard, setLeaderboard] = useState([]);
+  // Robust API URL for Codespaces or local
+  let apiUrl;
+  if (window.location.hostname.endsWith('.app.github.dev')) {
+    apiUrl = `https://${window.location.hostname.replace('-3000', '-8000')}/api/leaderboard/`;
+  } else {
+    apiUrl = 'http://localhost:8000/api/leaderboard/';
+  }
+
+  useEffect(() => {
+    console.log('Fetching from:', apiUrl);
+    fetch(apiUrl)
+      .then(res => res.json())
+      .then(data => {
+        const results = data.results || data;
+        setLeaderboard(results);
+        console.log('Fetched leaderboard:', results);
+      })
+      .catch(err => console.error('Error fetching leaderboard:', err));
+  }, [apiUrl]);
+
+  return (
+    <div className="card mb-4">
+      <div className="card-body">
+        <h2 className="card-title text-success mb-3">Leaderboard</h2>
+        <div className="table-responsive">
+          <table className="table table-striped table-bordered">
+            <thead className="table-light">
+              <tr>
+                <th>Team</th>
+                <th>Points</th>
+              </tr>
+            </thead>
+            <tbody>
+              {leaderboard.map((entry, idx) => (
+                <tr key={idx}>
+                  <td>{entry.team}</td>
+                  <td>{entry.points}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Leaderboard;
